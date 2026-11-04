@@ -1,0 +1,239 @@
+/* 나 찾기 100일 퀘스트 - style.css
+   초등학생 5학년 눈높이에 맞춘 따뜻하고 산뜻한 파스텔톤 디자인 */
+
+:root {
+  --bg-primary: #FFFDF7;
+  --bg-card: #FFFFFF;
+  --pastel-yellow: #FEF3C7;
+  --pastel-yellow-deep: #F59E0B;
+  --pastel-mint: #D1FAE5;
+  --pastel-mint-deep: #10B981;
+  --pastel-blue: #E0F2FE;
+  --pastel-blue-deep: #0284C7;
+  --pastel-pink: #FCE7F3;
+  --pastel-pink-deep: #EC4899;
+  --pastel-purple: #EDE9FE;
+  --pastel-purple-deep: #8B5CF6;
+  --text-main: #1E293B;
+  --text-muted: #64748B;
+  --border-soft: #F1E5D1;
+  --radius-lg: 24px;
+  --radius-md: 16px;
+  --radius-sm: 10px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Header */
+.app-header {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 2px solid var(--border-soft);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 12px 20px;
+}
+
+.header-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.logo-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-icon {
+  font-size: 28px;
+  background: var(--pastel-yellow);
+  padding: 6px;
+  border-radius: var(--radius-md);
+}
+
+.logo-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: #78350F;
+}
+
+.logo-sub {
+  font-size: 11px;
+  font-weight: 600;
+  color: #B45309;
+}
+
+.sheet-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-sheet {
+  border: none;
+  padding: 8px 14px;
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-sheet-load {
+  background: var(--pastel-mint);
+  color: #065F46;
+  border: 1px solid #A7F3D0;
+}
+
+.btn-sheet-save {
+  background: var(--pastel-yellow);
+  color: #92400E;
+  border: 1px solid #FDE68A;
+}
+
+.btn-sheet:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Main Layout */
+.main-container {
+  max-width: 900px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+/* Card 3D Flip */
+.perspective {
+  perspective: 1000px;
+}
+
+.quest-card-inner {
+  position: relative;
+  width: 100%;
+  min-height: 480px;
+  text-align: left;
+  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform-style: preserve-3d;
+}
+
+.quest-card-inner.flipped {
+  transform: rotateY(180deg);
+}
+
+.card-front, .card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  background: #FFFFFF;
+  border: 2px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  box-shadow: 0 10px 25px -5px rgba(245, 158, 11, 0.1);
+}
+
+.card-back {
+  transform: rotateY(180deg);
+  background: linear-gradient(135deg, #FFFBEB 0%, #FFFFFF 50%, #FDF2F8 100%);
+  border-color: #FCD34D;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Emotions */
+.emotion-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  margin: 12px 0 20px;
+}
+
+.emotion-btn {
+  background: #F8FAFC;
+  border: 2px solid #E2E8F0;
+  border-radius: var(--radius-md);
+  padding: 10px 4px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.emotion-btn.active {
+  background: var(--pastel-yellow);
+  border-color: var(--pastel-yellow-deep);
+  transform: scale(1.05);
+  font-weight: bold;
+}
+
+.emotion-btn .emoji {
+  font-size: 24px;
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* Textarea */
+.answer-box {
+  width: 100%;
+  min-height: 120px;
+  padding: 14px;
+  border-radius: var(--radius-md);
+  border: 2px solid #FDE68A;
+  background: #FFFDF7;
+  font-size: 14px;
+  outline: none;
+  resize: vertical;
+}
+
+.answer-box:focus {
+  border-color: var(--pastel-yellow-deep);
+  background: #FFFFFF;
+}
+
+/* Action button */
+.btn-submit {
+  width: 100%;
+  background: linear-gradient(135deg, #F59E0B 0%, #EA580C 100%);
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: var(--radius-md);
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
+  transition: all 0.2s ease;
+  margin-top: 14px;
+}
+
+.btn-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(245, 158, 11, 0.4);
+}
+
+/* Print Styles */
+@media print {
+  .no-print { display: none !important; }
+  body { background: white !important; }
+}

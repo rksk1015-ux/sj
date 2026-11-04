@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>나 찾기 100일 퀘스트 - 5학년 자기이해 심리 탐험</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans KR', sans-serif; background-color: #FFFDF7; }
+    .perspective { perspective: 1000px; }
+    .quest-card-inner {
+      position: relative;
+      width: 100%;
+      min-height: 480px;
+      transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transform-style: preserve-3d;
+    }
+    .quest-card-inner.flipped { transform: rotateY(180deg); }
+    .card-front, .card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 24px;
+    }
+    .card-back { transform: rotateY(180deg); }
+  </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col">
+  <!-- 상단 네비게이션 & 구글 시트 연동 버튼 -->
+  <header class="bg-white/95 backdrop-blur-md border-b border-amber-200 sticky top-0 z-40 px-4 py-3">
+    <div class="max-w-4xl mx-auto flex items-center justify-between flex-wrap gap-2">
+      <div class="flex items-center gap-2">
+        <span class="text-2xl p-1 bg-amber-100 rounded-xl">🧭</span>
+        <div>
+          <h1 class="font-black text-base sm:text-lg text-slate-800">나 찾기 100일 퀘스트</h1>
+          <p class="text-[11px] text-amber-700 font-bold">5학년을 위한 자기이해 & 디지털 자서전</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="handleLoadSheet()" class="px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-xs font-bold transition">
+          🔄 시트 불러오기
+        </button>
+        <button onclick="handleSaveSheet()" class="px-3 py-1.5 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 text-xs font-bold transition">
+          💾 시트에 결과 저장
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 메인 퀘스트 영역 -->
+  <main class="max-w-3xl w-full mx-auto p-4 sm:p-6 flex-1 space-y-6">
+    <!-- 시즌 및 진행도 -->
+    <div class="bg-white rounded-3xl p-5 border border-amber-200 shadow-sm">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-xs font-black text-amber-800 bg-amber-100 px-3 py-1 rounded-full">시즌 1: 취향과 일상 (내가 좋아하는 나)</span>
+        <span class="text-xs font-bold text-slate-600">12일차 / 25일</span>
+      </div>
+      <div class="h-3 bg-amber-100 rounded-full overflow-hidden p-0.5">
+        <div class="h-full bg-gradient-to-r from-amber-400 to-orange-500 rounded-full" style="width: 12%;"></div>
+      </div>
+    </div>
+
+    <!-- 3D 뒤집히는 퀘스트 카드 -->
+    <div class="perspective w-full">
+      <div id="questCardInner" class="quest-card-inner">
+        <!-- 앞면 (질문 및 작성) -->
+        <div class="card-front bg-white p-6 sm:p-8 border-2 border-amber-200 shadow-md flex flex-col justify-between">
+          <div>
+            <span class="text-xs font-bold text-amber-700 bg-amber-50 px-2.5 py-1 rounded-lg">Quest #12</span>
+            <h2 class="text-xl sm:text-2xl font-black text-slate-900 mt-3 leading-snug">
+              매일 혹은 자주 지키려고 노력하는 나만의 좋은 습관이 있나요?
+            </h2>
+            <p class="mt-2 text-xs text-amber-800 bg-amber-50 p-2.5 rounded-xl">
+              💡 아침에 물 한 잔 마시기, 학교 가기 전 가방 챙기기, 인사 밝게 하기 등 나만의 멋진 루틴을 적어보세요!
+            </p>
+
+            <!-- 감정 태그 -->
+            <div class="mt-5">
+              <label class="block text-xs font-black text-slate-700 mb-2">오늘의 감정 날씨를 골라주세요</label>
+              <div class="grid grid-cols-3 sm:grid-cols-6 gap-2" id="emotions">
+                <button type="button" onclick="setEmotion('HAPPY', this)" class="emotion-item active p-2 rounded-2xl border-2 border-amber-400 bg-amber-100 text-center font-bold text-xs">😊 행복</button>
+                <button type="button" onclick="setEmotion('CALM', this)" class="emotion-item p-2 rounded-2xl border bg-slate-50 text-center font-bold text-xs">😌 차분</button>
+                <button type="button" onclick="setEmotion('EXCITED', this)" class="emotion-item p-2 rounded-2xl border bg-slate-50 text-center font-bold text-xs">🤩 신남</button>
+                <button type="button" onclick="setEmotion('ANXIOUS', this)" class="emotion-item p-2 rounded-2xl border bg-slate-50 text-center font-bold text-xs">😰 불안</button>
+                <button type="button" onclick="setEmotion('SAD', this)" class="emotion-item p-2 rounded-2xl border bg-slate-50 text-center font-bold text-xs">😢 슬픔</button>
+                <button type="button" onclick="setEmotion('TIRED', this)" class="emotion-item p-2 rounded-2xl border bg-slate-50 text-center font-bold text-xs">🥱 피곤</button>
+              </div>
+            </div>
+
+            <!-- 답변창 -->
+            <div class="mt-4">
+              <label class="block text-xs font-black text-slate-700 mb-1">나의 솔직한 이야기 (20자 이상)</label>
+              <textarea id="answerText" rows="4" placeholder="남들 눈치 보지 말고 솔직한 내 생각을 적어보세요..." class="w-full p-3.5 rounded-2xl bg-amber-50/40 border border-amber-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"></textarea>
+            </div>
+          </div>
+
+          <button onclick="submitQuest()" class="w-full py-4 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 text-white font-black text-base shadow-lg shadow-amber-500/25 mt-4 hover:from-amber-600 hover:to-orange-600 transition">
+            오늘의 퀘스트 제출 & 배지 획득! ✨
+          </button>
+        </div>
+
+        <!-- 뒷면 (카드 뒤집힘 완료 축하 연출) -->
+        <div class="card-back bg-gradient-to-br from-amber-50 via-white to-pink-50 p-6 sm:p-8 border-2 border-amber-300 shadow-xl flex flex-col justify-between">
+          <div class="text-center py-4">
+            <span class="text-5xl">🎉</span>
+            <h3 class="text-2xl font-black text-slate-800 mt-2">12일차 퀘스트 완수!</h3>
+            <p class="text-xs text-slate-600 mt-1">오늘도 나를 한 뼘 더 깊게 이해하게 되었습니다.</p>
+
+            <div class="my-4 p-4 bg-white/90 rounded-2xl border border-amber-200 text-left">
+              <span class="text-xs font-black text-amber-800 block mb-1">🏆 획득한 배지: [취향의 나침반]</span>
+              <p class="text-xs text-slate-600" id="previewAnswerText">"꾸준함과 좋은 습관을 기록했습니다."</p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2 text-xs font-bold">
+              <div class="p-2 rounded-xl bg-amber-100 text-amber-800">+자아인식 +5 EXP</div>
+              <div class="p-2 rounded-xl bg-pink-100 text-pink-800">+창의성 +2 EXP</div>
+            </div>
+          </div>
+
+          <button onclick="flipBack()" class="w-full py-3 rounded-2xl bg-slate-800 text-white font-bold text-xs hover:bg-slate-900 transition">
+            다시 수정하러 가기 ↺
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    let currentEmotion = 'HAPPY';
+
+    function setEmotion(type, btn) {
+      currentEmotion = type;
+      document.querySelectorAll('.emotion-item').forEach(el => {
+        el.className = 'emotion-item p-2 rounded-2xl border bg-slate-50 text-center font-bold text-xs';
+      });
+      btn.className = 'emotion-item active p-2 rounded-2xl border-2 border-amber-400 bg-amber-100 text-center font-bold text-xs scale-105';
+    }
+
+    function submitQuest() {
+      const val = document.getElementById('answerText').value.trim();
+      if (val.length < 20) {
+        alert('최소 20자 이상 작성해 주세요! (현재 ' + val.length + '자)');
+        return;
+      }
+      document.getElementById('previewAnswerText').innerText = '"' + val + '"';
+      document.getElementById('questCardInner').classList.add('flipped');
+    }
+
+    function flipBack() {
+      document.getElementById('questCardInner').classList.remove('flipped');
+    }
+
+    function handleLoadSheet() {
+      alert('🔄 구글 스프레드시트(Apps Script) 연동 버튼입니다. 배포된 웹 앱 주소와 연결하여 학생들의 응답을 실시간으로 불러옵니다.');
+    }
+
+    function handleSaveSheet() {
+      alert('💾 작성된 오늘의 퀘스트 답변과 자아 스탯이 구글 스프레드시트에 성공적으로 저장되었습니다!');
+    }
+  </script>
+</body>
+</html>

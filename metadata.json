@@ -1,0 +1,6 @@
+{
+  "name": "나 찾기 100일 퀘스트",
+  "description": "초등학교 5학년 학생들을 위한 웹 기반 자기이해 및 심리 탐험 프로그램. 4개 시즌 100일 퀘스트, 5대 자아 스탯 레이더 차트, 우정 케미 비교, 100일 자아 도감 및 교사용 상담 대시보드.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
