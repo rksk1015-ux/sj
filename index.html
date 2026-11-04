@@ -14,8 +14,30 @@
     <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   </head>
   <body class="bg-[#FFFDF7] text-slate-800 antialiased selection:bg-amber-200 selection:text-amber-900">
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <div id="root">
+      <div id="loading-fallback" style="min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; text-align: center; font-family: 'Noto Sans KR', sans-serif;">
+        <div style="font-size: 40px; margin-bottom: 12px; animation: bounce 1s infinite;">
+          🧭
+        </div>
+        <h2 style="font-size: 20px; font-weight: 800; color: #1E293B; margin-bottom: 6px;">나 찾기 100일 퀘스트</h2>
+        <p style="font-size: 13px; font-weight: 600; color: #B45309;">자아 탐험 프로그램을 불러오는 중입니다...</p>
+      </div>
+    </div>
+    <script type="module" src="./src/main.tsx"></script>
+    <script>
+      // 깃허브 Pages 빈 페이지 자동 감지 및 복구
+      // 빌드 없이 GitHub Pages(main 루트)에 올린 경우 브라우저가 raw .tsx를 실행할 수 없으므로
+      // 1.2초 내에 React가 마운트되지 않으면 완성형 단일 웹앱(standalone_single_file.html)으로 자동 전환합니다.
+      window.addEventListener('DOMContentLoaded', function () {
+        setTimeout(function () {
+          var fb = document.getElementById('loading-fallback');
+          if (fb && fb.parentElement) {
+            console.warn('[나 찾기 100일 퀘스트] 정적 배포 감지: 독립 실행형 페이지로 자동 전환합니다.');
+            window.location.replace('./standalone_single_file.html');
+          }
+        }, 1200);
+      });
+    </script>
   </body>
 </html>
 
